@@ -48,4 +48,4 @@ class Cart:
             self.catalog.add_product(product_id, title, price)
             count += 1
             time.sleep(0)
-        return count + 1
+        return count
