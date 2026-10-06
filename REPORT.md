@@ -7,9 +7,31 @@ Kaung Myat Tun, Aung Kyaw Phyo
 
 Repository: https://github.com/6705142021-peter/App_Testing_Test
 
+Report prepared by L Peter San Awng, with AI assistance. Member names
+below identify planned assignments, not claims of actual authorship.
+Group review remains pending.
+
 ## Part A -- Test Types
 
-### Slow Testing -- L Peter San Awng
+### Smoke Testing -- Assigned Area: Thin Thiri Zaw
+
+Smoke tests quickly check whether essential features work at a basic
+level. They should run on every push and early in deployment checks
+so major failures are detected quickly.
+
+Two bookstore examples are registering a new account and checking
+out a nonempty cart.
+
+### Regression Testing -- Assigned Area: Paing Oo Thant
+
+Regression tests check that a previously discovered defect does not
+return. Run relevant tests when affected code changes and the full
+regression suite before releases.
+
+Two bookstore examples are checking that cart totals include every
+item and that empty checkout returns None without recording an order.
+
+### Slow Testing -- Assigned Area: L Peter San Awng
 
 Slow tests check correctness using workloads that take noticeably longer
 than basic checks, such as large datasets or repeated operations. They
@@ -20,7 +42,22 @@ repeatedly calculating totals for a large shopping cart.
 
 ## Part B -- Scenario Classification
 
-### Scenario 3 -- L Peter San Awng
+### Scenario 1 -- Assigned Area: Thin Thiri Zaw
+
+Classification: smoke, and potentially slow.
+
+Password-reset email delivery checks an essential account feature.
+An end-to-end test using a real mail service may also be slow,
+but the one-minute deadline alone does not establish its runtime.
+
+### Scenario 2 -- Assigned Area: Paing Oo Thant
+
+Classification: regression.
+
+The shipping-cost calculation previously contained a bug that was
+fixed. This test checks that later changes have not reintroduced it.
+
+### Scenario 3 -- Assigned Area: L Peter San Awng
 
 Classification: slow.
 
@@ -28,15 +65,38 @@ Generating a sales report from ten years of orders processes a large
 historical dataset. The test should verify the report's correctness,
 not merely that processing finishes.
 
-## Part F -- Team Reflection
+### Scenario 4 -- Assigned Area: Kaung Myat Tun
 
-### Question 3 -- L Peter San Awng
+Classification: smoke.
 
-If slow tests never run, defects involving large datasets or repeated
-operations can remain undetected. Small tests may pass while larger
-workloads produce incorrect results or take too long to process.
+Checking whether the payment page loads after deployment quickly
+verifies an essential customer feature. It provides basic deployment
+feedback without exhaustively testing payment processing.
 
-## Peter's Slow-Test Evidence
+### Scenario 5 -- Assigned Area: Paing Oo Thant
+
+Classification: regression.
+
+A customer previously reported duplicate refund credits. The test
+reproduces that situation and checks that issuing the refund twice
+does not credit the customer twice.
+
+### Scenario 6 -- Assigned Area: Aung Kyaw Phyo
+
+Classification: slow.
+
+Testing recommendations with one million titles exercises a large
+dataset and substantial processing work. It would also be regression
+if it reproduced a specific previously fixed defect, but the scenario
+does not state such a history.
+
+## Part C -- Smoke and Slow Tests
+
+The current student suite contains five smoke tests, four regression tests
+and two slow tests, each with one marker. The smoke checks cover registration,
+product storage, password validation, cart insertion and nonempty checkout.
+
+### Large-Cart Slow-Test Evidence
 
 Test: `test_large_cart_repeated_totals`
 
@@ -57,13 +117,13 @@ Observed output:
 1 passed in 0.76s
 ```
 
-For comparison, the separate smoke run reported:
+For comparison, the historical smoke run at the seven-test stage reported:
 
 ```text
 5 passed, 2 deselected in 0.01s
 ```
 
-The complete current student suite reported:
+The complete student suite at that seven-test stage reported:
 
 ```text
 7 passed in 0.74s
@@ -72,34 +132,7 @@ The complete current student suite reported:
 These measurements are from our local machine; durations may differ
 on another computer or the GitHub Actions runner.
 
-## Report Status
-
-This report currently contains L Peter San Awng's assigned sections.
-The other members' sections and final group verification are pending.
-
-## Additional Sections -- Aung Kyaw Phyo's Assigned Area
-
-Completed by: L Peter San Awng, with AI assistance.
-These sections will be placed under the corresponding headings
-when the final group report is assembled.
-
-### Part B -- Scenario 6
-
-Classification: slow.
-
-Testing recommendations with one million titles exercises a large
-dataset and substantial processing work. It would also be regression
-if it reproduced a specific previously fixed defect, but the scenario
-does not state such a history.
-
-### Part F -- Question 4
-
-A test can belong to two categories because the categories describe
-different characteristics. A large import test reproducing a known
-counting defect can be regression in purpose and slow in workload.
-Such a test belongs in scheduled full runs and suitable release checks.
-
-### Bulk-Import Slow Test
+### Bulk-Import Slow Test -- Assigned Area: Aung Kyaw Phyo
 
 Test: `test_bulk_import_many_products`
 
@@ -109,7 +142,7 @@ middle and end of the dataset.
 
 Measured test duration: 0.31 seconds on our local machine.
 
-### Combined Slow-Test Verification
+### Historical Combined Slow-Test Verification
 
 Command:
 
@@ -117,7 +150,7 @@ Command:
 .venv\Scripts\python.exe -m pytest tests/test_bookstore.py -m slow -v --durations=0
 ```
 
-Relevant actual output:
+Actual output from the nine-test stage:
 
 ```text
 0.80s call tests/test_bookstore.py::test_large_cart_repeated_totals
@@ -125,7 +158,20 @@ Relevant actual output:
 2 passed, 7 deselected in 1.13s
 ```
 
-### Current Full-Suite Verification
+## Part D -- Defects and Supplied-Test Audit
+
+Four confirmed defects and their test-first evidence are documented in
+[FINDINGS.md](FINDINGS.md): cart totals, import counts, exact-password login,
+and empty checkout. The assignment calls for six defects; four are currently
+confirmed. Search and history expectations require clarification before
+being recorded as additional planted defects.
+
+All eight supplied-test audits and saved outputs are documented in
+[AI_USAGE.md](AI_USAGE.md), along with the coverage summary and reflection
+draft. Three tests genuinely detected defects, four passed on the original
+application, and one asserted an unsupported ten-result cap.
+
+### Historical Nine-Test Full-Suite Verification
 
 Command:
 
@@ -133,16 +179,42 @@ Command:
 .venv\Scripts\python.exe -m pytest tests/test_bookstore.py -v
 ```
 
-Actual summary:
+Actual summary from the import-fix stage:
 
 ```text
 9 passed in 1.12s
 ```
 
 These measurements are local results. Runtime may differ on GitHub Actions.
-CI configuration and the supplied import-test audit are still pending.
+CI configuration and the supplied import-test audit are now documented below
+and in AI_USAGE.md. This result is historical, not final verification.
 
-## Part E -- Continuous Integration Progress
+### Account-Fix Verification
+
+The exact-password regression failed before the fix and passed afterward.
+
+Failing-test commit: cf72c2f
+Fix commit: 58ec97e
+
+The full student suite at that development stage reported:
+10 passed in 1.06s
+
+Both supplied account-test audits are documented in AI_USAGE.md: PASS on
+the original and partially fixed versions; neither detects the password defect.
+
+### Checkout-Fix Verification
+
+Failing-test commit: ab52f61
+Fix commit: 8fc783e
+
+The regression passed after adding the empty-cart check.
+The full student suite at that development stage reported 11 passed in 1.09s.
+
+The supplied checkout-test audit is documented in AI_USAGE.md with actual
+original and current output: FAIL before the fix, PASS afterward.
+The history investigation remains pending.
+
+## Part E -- Continuous Integration
 
 Assigned role: Aung Kyaw Phyo.
 Implemented by: L Peter San Awng, with AI assistance.
@@ -165,6 +237,7 @@ Actual result:
 ```
 
 The full job was skipped as configured for a push event.
+
 ### Verified Manual Full Run
 
 The import fix, slow import test and workflow were merged into `main`.
@@ -183,30 +256,15 @@ Actual result:
 Both smoke and full jobs succeeded. The full job included both slow tests.
 The nightly schedule is configured; this evidence is from a manual run,
 not a scheduled run.
-## Additional Sections -- Thin Thiri Zaw's Assigned Area
 
-Completed by: L Peter San Awng, with AI assistance.
-These sections will be moved under the corresponding headings
-when the final group report is assembled.
+This nine-test run preceded the password and empty-checkout regressions.
+A final full CI run and verification of actual scheduled execution remain pending.
 
-### Part A -- Smoke Testing
+## Part F -- Team Reflection
 
-Smoke tests quickly check whether essential features work at a basic
-level. They should run on every push and early in deployment checks
-so major failures are detected quickly.
+Responses prepared by L Peter San Awng, with AI assistance, for group review.
 
-Two bookstore examples are registering a new account and checking
-out a nonempty cart.
-
-### Part B -- Scenario 1
-
-Classification: smoke, and potentially slow.
-
-Password-reset email delivery checks an essential account feature.
-An end-to-end test using a real mail service may also be slow,
-but the one-minute deadline alone does not establish its runtime.
-
-### Part F -- Question 1
+### Question 1 -- Assigned Area: Thin Thiri Zaw
 
 Running only regression tests can spend time on historical defect
 cases while missing a broader failure in an essential feature.
@@ -214,33 +272,28 @@ A practical approach combines quick smoke checks, relevant regression
 tests and scheduled full suites. Small regression suites can still
 be inexpensive enough to run on every commit.
 
-### Account-Fix Verification
+### Question 2 -- Assigned Area: Paing Oo Thant
 
-The exact-password regression failed before the fix and passed afterward.
+Smoke tests usually run first because they quickly check essential
+features. If those checks fail, the pipeline provides early feedback
+before spending time on longer tests.
 
-Failing-test commit: cf72c2f
-Fix commit: 58ec97e
+### Question 3 -- Assigned Area: L Peter San Awng
 
-The current full student suite reported:
-10 passed in 1.06s
+If slow tests never run, defects involving large datasets or repeated
+operations can remain undetected. Small tests may pass while larger
+workloads produce incorrect results or take too long to process.
 
-The two supplied account-test audits are still pending.
+### Question 4 -- Assigned Area: Aung Kyaw Phyo
 
-## Additional Sections -- Kaung Myat Tun's Assigned Area
+A test can belong to two categories because the categories describe
+different characteristics. A large import test reproducing a known
+counting defect can be regression in purpose and slow in workload.
+Such a test belongs in scheduled full runs and suitable release checks.
 
-Completed by: L Peter San Awng, with AI assistance.
-These sections will be moved under the corresponding headings
-when the final group report is assembled.
+This is an example, not a claim that a dual-marked bonus test has been added.
 
-### Part B -- Scenario 4
-
-Classification: smoke.
-
-Checking whether the payment page loads after deployment quickly
-verifies an essential customer feature. It provides basic deployment
-feedback without exhaustively testing payment processing.
-
-### Part F -- Question 5
+### Question 5 -- Assigned Area: Kaung Myat Tun
 
 When the bug finder and fixer are different people, the bug report
 must let the fixer reproduce the problem independently. It should
@@ -253,48 +306,17 @@ None. This evidence would allow another person to reproduce the
 problem. In this work, L Peter San Awng performed both roles;
 we do not claim that a separate teammate completed that handoff.
 
-### Checkout-Fix Verification
+## Submission Status
 
-Failing-test commit: ab52f61
-Fix commit: 8fc783e
+The definitions, six scenario classifications and five reflection answers
+are assembled above. Supplied-test audits and coverage are documented.
+The project is not yet claimed to satisfy every submission requirement.
 
-The regression passed after adding the empty-cart check.
-The full student suite reported 11 passed in 1.09s.
+Remaining work:
 
-The supplied checkout-test audit is documented in AI_USAGE.md with actual
-original and current output: FAIL before the fix, PASS afterward.
-The history investigation remains pending.
-
-## Additional Sections -- Paing Oo Thant's Assigned Area
-
-Completed by: L Peter San Awng, with AI assistance.
-
-### Part A -- Regression Testing
-
-Regression tests check that a previously discovered defect does not
-return. Run relevant tests when affected code changes and the full
-regression suite before releases.
-
-Two bookstore examples are checking that cart totals include every
-item and that empty checkout returns None without recording an order.
-
-### Part B -- Scenario 2
-
-Classification: regression.
-
-The shipping-cost calculation previously contained a bug that was
-fixed. This test checks that later changes have not reintroduced it.
-
-### Part B -- Scenario 5
-
-Classification: regression.
-
-A customer previously reported duplicate refund credits. The test
-reproduces that situation and checks that issuing the refund twice
-does not credit the customer twice.
-
-### Part F -- Question 2
-
-Smoke tests usually run first because they quickly check essential
-features. If those checks fail, the pipeline provides early feedback
-before spending time on longer tests.
+- Clarify search and history contracts and complete remaining defect work.
+- Correct smoke-test docstrings that name planned members instead of the actual author.
+- Review the report and AI-audit reflection with the group.
+- Rerun original-application smoke/regression checks and the final fixed suite.
+- Record final full CI evidence and check actual scheduled execution.
+- Verify private repository visibility and instructor collaborator access.
