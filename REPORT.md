@@ -183,3 +183,45 @@ Actual result:
 Both smoke and full jobs succeeded. The full job included both slow tests.
 The nightly schedule is configured; this evidence is from a manual run,
 not a scheduled run.
+## Additional Sections -- Thin Thiri Zaw's Assigned Area
+
+Completed by: L Peter San Awng, with AI assistance.
+These sections will be moved under the corresponding headings
+when the final group report is assembled.
+
+### Part A -- Smoke Testing
+
+Smoke tests quickly check whether essential features work at a basic
+level. They should run on every push and early in deployment checks
+so major failures are detected quickly.
+
+Two bookstore examples are registering a new account and checking
+out a nonempty cart.
+
+### Part B -- Scenario 1
+
+Classification: smoke, and potentially slow.
+
+Password-reset email delivery checks an essential account feature.
+An end-to-end test using a real mail service may also be slow,
+but the one-minute deadline alone does not establish its runtime.
+
+### Part F -- Question 1
+
+Running only regression tests can spend time on historical defect
+cases while missing a broader failure in an essential feature.
+A practical approach combines quick smoke checks, relevant regression
+tests and scheduled full suites. Small regression suites can still
+be inexpensive enough to run on every commit.
+
+### Account-Fix Verification
+
+The exact-password regression failed before the fix and passed afterward.
+
+Failing-test commit: cf72c2f
+Fix commit: 58ec97e
+
+The current full student suite reported:
+10 passed in 1.06s
+
+The two supplied account-test audits are still pending.
