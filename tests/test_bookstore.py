@@ -54,3 +54,20 @@ def test_known_product_reaches_cart():
 
     assert cart.add(1) is True
     assert cart.items == [1]
+
+@pytest.mark.regression
+def test_cart_total_counts_every_item():
+    """Author: L Peter San Awng. AI-assisted regression for Cart.total.
+
+    Observed defect: the last cart item's price is omitted.
+    Expected behavior: every item's price contributes to the total.
+    """
+    catalog = Catalog()
+    catalog.add_product(1, "Book A", 10)
+    catalog.add_product(2, "Book B", 20)
+
+    cart = Cart(catalog)
+    assert cart.add(1) is True
+    assert cart.add(2) is True
+
+    assert cart.total() == 30
