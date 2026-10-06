@@ -161,7 +161,9 @@ Actual summary:
 - **What we observed:** Checkout returned `[]`; the assertion failed.
 - **What we expected instead:** `None`, as explicitly promised by the
   method's docstring. No order should be recorded for an empty checkout.
-- **The fix we made:** Not fixed yet; failure recorded first.
+- **The fix we made:** Added an empty-cart check that returns None
+  before creating or recording an order.
+- **Failing-test commit:** `ab52f61`
 - **Author of this finding:** L Peter San Awng, with AI assistance.
 - **Assigned role:** Kaung Myat Tun's checkout-testing area.
 
@@ -176,4 +178,29 @@ Actual summary:
 ```text
 E       assert [] is None
 1 failed in 0.07s
+```
+### After-fix verification
+
+Regression command:
+
+```cmd
+.venv\Scripts\python.exe -m pytest tests/test_bookstore.py::test_empty_checkout_returns_none_without_order -v
+```
+
+Actual summary:
+
+```text
+1 passed in 0.01s
+```
+
+Full-suite command:
+
+```cmd
+.venv\Scripts\python.exe -m pytest tests/test_bookstore.py -v
+```
+
+Actual summary:
+
+```text
+11 passed in 1.09s
 ```
