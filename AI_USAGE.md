@@ -21,7 +21,7 @@ Original application version: 4eadded
 Current partially fixed application versions: `32aa9ac` for the cart-total
 and cart-add audits; `41fb0d5` for the import-count audit; `58ec97e` for
 the wrong-password and duplicate-registration audits; `8fc783e` for the
-empty-checkout audit.
+empty-checkout audit; `9fb7625` for the two search audits.
 
 | Test | Original | Current | Verdict |
 |---|---|---|---|
@@ -31,6 +31,8 @@ empty-checkout audit.
 | test_login_rejects_wrong_password | PASS | PASS | Detects nothing |
 | test_register_duplicate_returns_false | PASS | PASS | Detects nothing |
 | test_checkout_empty_returns_none | FAIL | PASS | Genuine detection |
+| test_search_finds_exact_title | PASS | PASS | Detects nothing |
+| test_search_is_limited_to_ten_results | FAIL | FAIL | Invented requirement |
 
 ### test_cart_total_sums_items
 
@@ -446,9 +448,193 @@ real documented return-value defect. The supplied assertion checks only the
 return value; our student regression additionally checks that no empty order
 is recorded. It does not establish defensive-copy behavior for order history.
 
+### test_search_finds_exact_title
+
+Assigned area: Paing Oo Thant.
+Actual auditor: L Peter San Awng, with AI assistance.
+
+The test adds a product titled `Python Testing` and expects its ID from an
+exact-title search. This simple scenario succeeds on original and current code.
+
+#### Original-code evidence
+
+Version: `4eadded`
+Working folder: `C:\Github\App_Testing_Test_original`
+
+Command:
+
+```cmd
+C:\Github\App_Testing_Test\.venv\Scripts\python.exe -m pytest ai_review/test_ai_generated.py::test_search_finds_exact_title -v
+```
+
+Actual output:
+
+```text
+============================= test session starts =============================
+platform win32 -- Python 3.14.3, pytest-9.1.1, pluggy-1.6.0 -- C:\Github\App_Testing_Test\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Github\App_Testing_Test_original
+configfile: pytest.ini
+collecting ... collected 1 item
+
+ai_review/test_ai_generated.py::test_search_finds_exact_title PASSED     [100%]
+
+============================== 1 passed in 0.01s ==============================
+```
+
+Saved output: [Original evidence](evidence/paing_exact_original.txt)
+
+#### Current-code evidence
+
+Version: `9fb7625`
+Working folder: `C:\Github\App_Testing_Test`
+
+Command:
+
+```cmd
+.venv\Scripts\python.exe -m pytest ai_review/test_ai_generated.py::test_search_finds_exact_title -v
+```
+
+Actual output:
+
+```text
+============================= test session starts =============================
+platform win32 -- Python 3.14.3, pytest-9.1.1, pluggy-1.6.0 -- C:\Github\App_Testing_Test\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Github\App_Testing_Test
+configfile: pytest.ini
+collecting ... collected 1 item
+
+ai_review/test_ai_generated.py::test_search_finds_exact_title PASSED     [100%]
+
+============================== 1 passed in 0.01s ==============================
+```
+
+Saved output: [Current evidence](evidence/paing_exact_current.txt)
+
+Verdict: Detects nothing in the original bug hunt. PASS/PASS demonstrates that
+this assertion does not expose an original defect. It remains a useful basic
+search check, but does not cover other keywords, absent matches or alternative
+capitalization. Those cases require their own expectations and requirements;
+passing this test does not establish that search is correct in all cases.
+
+### test_search_is_limited_to_ten_results
+
+Assigned area: Paing Oo Thant.
+Actual auditor: L Peter San Awng, with AI assistance.
+
+The test inserts 20 products with matching titles and demands no more than ten
+results. Both application versions return all 20 matching IDs.
+
+Requirement check: the instructor's supplied `ST211_MIDTERM_INSTRUCTIONS.md`
+describes product search but does not set a result limit. The original
+`Catalog.search` docstring promises a list of product IDs whose titles contain
+the keyword; it supplies no ten-result cap or pagination contract. Returning
+all 20 matching IDs is consistent with that description. The cap comes from
+the supplied AI test's assertion rather than either specification.
+
+#### Original-code evidence
+
+Version: `4eadded`
+Working folder: `C:\Github\App_Testing_Test_original`
+
+Command:
+
+```cmd
+C:\Github\App_Testing_Test\.venv\Scripts\python.exe -m pytest ai_review/test_ai_generated.py::test_search_is_limited_to_ten_results -v
+```
+
+Actual output:
+
+```text
+============================= test session starts =============================
+platform win32 -- Python 3.14.3, pytest-9.1.1, pluggy-1.6.0 -- C:\Github\App_Testing_Test\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Github\App_Testing_Test_original
+configfile: pytest.ini
+collecting ... collected 1 item
+
+ai_review/test_ai_generated.py::test_search_is_limited_to_ten_results FAILED [100%]
+
+================================== FAILURES ===================================
+____________________ test_search_is_limited_to_ten_results ____________________
+
+    def test_search_is_limited_to_ten_results():
+        """Claims the catalogue search returns at most ten results."""
+        cat = Catalog()
+        for i in range(20):
+            cat.add_product(i, "match", 1)
+>       assert len(cat.search("match")) <= 10
+E       AssertionError: assert 20 <= 10
+E        +  where 20 = len([0, 1, 2, 3, 4, 5, ...])
+E        +    where [0, 1, 2, 3, 4, 5, ...] = search('match')
+E        +      where search = <bookstore_app.catalog.Catalog object at 0x000002481CC3F620>.search
+
+ai_review\test_ai_generated.py:60: AssertionError
+=========================== short test summary info ===========================
+FAILED ai_review/test_ai_generated.py::test_search_is_limited_to_ten_results
+============================== 1 failed in 0.03s ==============================
+```
+
+Saved output: [Original evidence](evidence/paing_limit_original.txt)
+
+#### Current-code evidence
+
+Version: `9fb7625`
+Working folder: `C:\Github\App_Testing_Test`
+
+Command:
+
+```cmd
+.venv\Scripts\python.exe -m pytest ai_review/test_ai_generated.py::test_search_is_limited_to_ten_results -v
+```
+
+Actual output:
+
+```text
+============================= test session starts =============================
+platform win32 -- Python 3.14.3, pytest-9.1.1, pluggy-1.6.0 -- C:\Github\App_Testing_Test\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Github\App_Testing_Test
+configfile: pytest.ini
+collecting ... collected 1 item
+
+ai_review/test_ai_generated.py::test_search_is_limited_to_ten_results FAILED [100%]
+
+================================== FAILURES ===================================
+____________________ test_search_is_limited_to_ten_results ____________________
+
+    def test_search_is_limited_to_ten_results():
+        """Claims the catalogue search returns at most ten results."""
+        cat = Catalog()
+        for i in range(20):
+            cat.add_product(i, "match", 1)
+>       assert len(cat.search("match")) <= 10
+E       AssertionError: assert 20 <= 10
+E        +  where 20 = len([0, 1, 2, 3, 4, 5, ...])
+E        +    where [0, 1, 2, 3, 4, 5, ...] = search('match')
+E        +      where search = <bookstore_app.catalog.Catalog object at 0x0000022990C8F620>.search
+
+ai_review\test_ai_generated.py:60: AssertionError
+=========================== short test summary info ===========================
+FAILED ai_review/test_ai_generated.py::test_search_is_limited_to_ten_results
+============================== 1 failed in 0.03s ==============================
+```
+
+Saved output: [Current evidence](evidence/paing_limit_current.txt)
+
+Verdict: Invented requirement, based on the supplied instructions and docstring.
+FAIL/FAIL alone would not establish this conclusion: the requirement check is
+what distinguishes the unsupported cap from an unfixed real defect. We did not
+truncate results merely to make the audit pass. If the instructor supplies an
+additional limit requirement, this verdict must be revisited.
+
+
 ## Status
 
-Six audit entries include commands and actual output for the original
+All eight audit entries include commands and actual output for the original
 application and the corresponding partially fixed application.
-Two other audits, the coverage table and group reflection are pending.
+The coverage table, group reflection and final application verification are
+still pending. Search and history investigations are not yet recorded as
+confirmed additional planted defects.
 Repeat the fixed-code evidence against the final integrated application.

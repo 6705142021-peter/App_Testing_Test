@@ -264,3 +264,37 @@ The full student suite reported 11 passed in 1.09s.
 The supplied checkout-test audit is documented in AI_USAGE.md with actual
 original and current output: FAIL before the fix, PASS afterward.
 The history investigation remains pending.
+
+## Additional Sections -- Paing Oo Thant's Assigned Area
+
+Completed by: L Peter San Awng, with AI assistance.
+
+### Part A -- Regression Testing
+
+Regression tests check that a previously discovered defect does not
+return. Run relevant tests when affected code changes and the full
+regression suite before releases.
+
+Two bookstore examples are checking that cart totals include every
+item and that empty checkout returns None without recording an order.
+
+### Part B -- Scenario 2
+
+Classification: regression.
+
+The shipping-cost calculation previously contained a bug that was
+fixed. This test checks that later changes have not reintroduced it.
+
+### Part B -- Scenario 5
+
+Classification: regression.
+
+A customer previously reported duplicate refund credits. The test
+reproduces that situation and checks that issuing the refund twice
+does not credit the customer twice.
+
+### Part F -- Question 2
+
+Smoke tests usually run first because they quickly check essential
+features. If those checks fail, the pipeline provides early feedback
+before spending time on longer tests.
