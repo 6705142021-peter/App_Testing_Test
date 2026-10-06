@@ -4,7 +4,10 @@ from bookstore_app import Users, Catalog, Cart
 
 @pytest.mark.smoke
 def test_registration_stores_account():
-    """Author: Thin Thiri Zaw. AI-assisted smoke test for registration."""
+    """Author: L Peter San Awng. AI-assisted smoke test for registration.
+
+    Assigned area: Thin Thiri Zaw.
+    """
     users = Users()
 
     assert users.register("alice", "secret123") is True
@@ -12,7 +15,10 @@ def test_registration_stores_account():
 
 @pytest.mark.smoke
 def test_catalog_stores_product():
-    """Author: Paing Oo Thant. AI-assisted smoke test for product storage."""
+    """Author: L Peter San Awng. AI-assisted smoke test for product storage.
+
+    Assigned area: Paing Oo Thant.
+    """
     catalog = Catalog()
 
     catalog.add_product(1, "Python Testing", 30)
@@ -34,7 +40,10 @@ def test_login_validates_password():
 
 @pytest.mark.smoke
 def test_checkout_places_nonempty_order():
-    """Author: Kaung Myat Tun. AI-assisted smoke test for checkout."""
+    """Author: L Peter San Awng. AI-assisted smoke test for checkout.
+
+    Assigned area: Kaung Myat Tun.
+    """
     catalog = Catalog()
     catalog.add_product(1, "Python Testing", 30)
 
@@ -46,7 +55,10 @@ def test_checkout_places_nonempty_order():
 
 @pytest.mark.smoke
 def test_known_product_reaches_cart():
-    """Author: Aung Kyaw Phyo. AI-assisted smoke test for cart insertion."""
+    """Author: L Peter San Awng. AI-assisted smoke test for cart insertion.
+
+    Assigned area: Aung Kyaw Phyo.
+    """
     catalog = Catalog()
     catalog.add_product(1, "Python Testing", 30)
 
