@@ -97,3 +97,57 @@ Relevant actual output:
 tests/test_bookstore.py::test_import_reports_exact_count PASSED
 8 passed in 0.75s
 ```
+## Bug 3: Login rejects an exact password containing punctuation
+
+- **Module / function:** `bookstore_app/users.py` -> `Users.login()`
+- **What we suspected and why:** Login removes non-alphanumeric characters
+  from the supplied password before comparing it with the stored password.
+- **What we did:** Registered alice with `secret!123`, then tried logging
+  in with that same password using `test_login_preserves_password_punctuation`.
+- **What we observed:** Login returned False. The test failed with
+  `AssertionError: assert False is True`.
+- **What we expected instead:** True, because the supplied password exactly
+  matches the registered password, including punctuation.
+- **The fix we made:** Removed password cleaning and compared the
+  supplied password directly with the stored password.
+- **Failing-test commit:** `cf72c2f`
+- **Author of this finding:** L Peter San Awng, with AI assistance.
+- **Assigned role:** Thin Thiri Zaw's account-testing area.
+
+### Before-fix command
+
+```cmd
+.venv\Scripts\python.exe -m pytest tests/test_bookstore.py::test_login_preserves_password_punctuation -v
+```
+
+### Before-fix evidence
+
+```text
+E       AssertionError: assert False is True
+1 failed in 0.06s
+```
+### After-fix verification
+
+Regression command:
+
+```cmd
+.venv\Scripts\python.exe -m pytest tests/test_bookstore.py::test_login_preserves_password_punctuation -v
+```
+
+Actual summary:
+
+```text
+1 passed in 0.01s
+```
+
+Full-suite command:
+
+```cmd
+.venv\Scripts\python.exe -m pytest tests/test_bookstore.py -v
+```
+
+Actual summary:
+
+```text
+10 passed in 1.06s
+```

@@ -137,3 +137,16 @@ def test_bulk_import_many_products():
             "title": f"Book {product_id}",
             "price": product_id % 100 + 1,
         }
+
+@pytest.mark.regression
+def test_login_preserves_password_punctuation():
+    """Author: L Peter San Awng. AI-assisted test; assigned area: Thin Thiri Zaw.
+
+    Users.login strips punctuation from the supplied password.
+    Expected behavior: the exact registered password must succeed.
+    """
+    users = Users()
+    assert users.register("alice", "secret!123") is True
+
+    assert users.login("alice", "secret!123") is True
+    assert users.login("alice", "secret123") is False
