@@ -165,4 +165,21 @@ Actual result:
 ```
 
 The full job was skipped as configured for a push event.
-A successful full run and integration into main are still pending.
+### Verified Manual Full Run
+
+The import fix, slow import test and workflow were merged into `main`.
+
+Application commit: `78463cc`
+Trigger: manual (`workflow_dispatch`)
+
+[Successful full GitHub Actions job](https://github.com/6705142021-peter/App_Testing_Test/actions/runs/37443599748/job/112202990424)
+
+Actual result:
+
+```text
+9 passed in 60.14s (0:01:00)
+```
+
+Both smoke and full jobs succeeded. The full job included both slow tests.
+The nightly schedule is configured; this evidence is from a manual run,
+not a scheduled run.
