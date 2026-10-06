@@ -1,0 +1,25 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.3, pytest-9.1.1, pluggy-1.6.0 -- C:\Github\App_Testing_Test\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Github\App_Testing_Test_original
+configfile: pytest.ini
+collecting ... collected 1 item
+
+ai_review/test_ai_generated.py::test_cart_total_sums_items FAILED        [100%]
+
+================================== FAILURES ===================================
+_________________________ test_cart_total_sums_items __________________________
+
+    def test_cart_total_sums_items():
+        """Claims to check the cart total is correct."""
+        cat = Catalog(); cat.add_product(1, "A", 10); cat.add_product(2, "B", 20)
+        c = Cart(cat); c.add(1); c.add(2)
+>       assert c.total() == 30
+E       assert 10 == 30
+E        +  where 10 = total()
+E        +    where total = <bookstore_app.cart.Cart object at 0x000001A941CAFE00>.total
+
+ai_review\test_ai_generated.py:16: AssertionError
+=========================== short test summary info ===========================
+FAILED ai_review/test_ai_generated.py::test_cart_total_sums_items - assert 10...
+============================== 1 failed in 0.03s ==============================
