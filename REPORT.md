@@ -92,8 +92,10 @@ does not state such a history.
 
 ## Part C -- Smoke and Slow Tests
 
-The current student suite contains five smoke tests, four regression tests
-and two slow tests, each with one marker. The smoke checks cover registration,
+The current student suite contains eleven tests: five smoke tests, five
+regression-marked tests and two slow-marked tests. The large-cart bonus test
+has both regression and slow markers, so these category counts overlap.
+All other tests have one marker. The smoke checks cover registration,
 product storage, password validation, cart insertion and nonempty checkout.
 
 ### Large-Cart Slow-Test Evidence
@@ -379,7 +381,7 @@ different characteristics. A large import test reproducing a known
 counting defect can be regression in purpose and slow in workload.
 Such a test belongs in scheduled full runs and suitable release checks.
 
-This is an example, not a claim that a dual-marked bonus test has been added.
+The large-cart test now demonstrates this overlap; see the bonus section below.
 
 ### Question 5 -- Assigned Area: Kaung Myat Tun
 
@@ -393,6 +395,62 @@ cart and shows that checkout returns [] instead of the documented
 None. This evidence would allow another person to reproduce the
 problem. In this work, L Peter San Awng performed both roles;
 we do not claim that a separate teammate completed that handoff.
+
+## Bonus -- Dual-Marker Test
+
+Test: `test_large_cart_repeated_totals`.
+Actual author: L Peter San Awng, with AI assistance.
+
+The existing large-cart test carries both `regression` and `slow` markers,
+using the assignment's bonus exception to the single-marker rule.
+Its setup and assertions are unchanged; this is not an additional distinct
+planted defect or a duplicate test.
+
+It is regression because the original total calculation skips the last
+item. With 100,000 pairs priced 2 and 3, the expected total is 500,000,
+but the original application returns 499,997. It is slow because the fixed
+test builds 200,000 cart items and performs 100 full total scans, followed
+by checkout and quantity checks.
+
+Original-application verification at `4eadded`, before adding the extra
+marker, used the previously copied test in the baseline worktree:
+
+```cmd
+C:\Github\App_Testing_Test\.venv\Scripts\python.exe -m pytest tests/test_submission_check.py::test_large_cart_repeated_totals -v -p no:cacheprovider
+```
+
+Relevant actual output:
+
+```text
+E           assert 499997 == (100000 * 5)
+1 failed in 0.07s
+```
+
+The original test stops at its first incorrect total; its fast failure
+does not measure the full workload that runs on the corrected application.
+
+In CI this test belongs in nightly full runs and suitable release checks,
+not the quick push smoke job. A targeted quick regression run can exclude
+it with `-m "regression and not slow"`. The existing full CI command
+collects the dual-marked test once, not twice.
+
+Fixed-application bonus verification on branch `bonus-dual-marker`:
+
+```cmd
+.venv\Scripts\python.exe -m pytest tests/test_bookstore.py::test_large_cart_repeated_totals -v --durations=0 -p no:cacheprovider
+```
+
+Actual output:
+
+```text
+tests/test_bookstore.py::test_large_cart_repeated_totals PASSED
+0.75s call tests/test_bookstore.py::test_large_cart_repeated_totals
+1 passed in 0.77s
+```
+
+Caching was disabled for this local verification; it does not alter test
+assertions or marker selection. CI verification of the new marker remains
+pending; the earlier linked run predates this bonus change.
 
 ## Submission Status
 
