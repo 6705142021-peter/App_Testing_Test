@@ -97,3 +97,43 @@ def test_large_cart_repeated_totals():
     assert order.count(1) == pair_count
     assert order.count(2) == pair_count
     assert cart.items == []
+
+@pytest.mark.regression
+def test_import_reports_exact_count():
+    """Author: L Peter San Awng. AI-assisted test; assigned area: Aung Kyaw Phyo.
+
+    Cart.import_products returns one too many.
+    Expected behavior: return the exact number of imported products.
+    """
+    catalog = Catalog()
+    cart = Cart(catalog)
+
+    products = [
+        (1, "Book A", 10),
+        (2, "Book B", 20),
+    ]
+
+    assert cart.import_products(products) == 2
+    assert len(catalog.products) == 2
+
+@pytest.mark.slow
+def test_bulk_import_many_products():
+    """Author: L Peter San Awng. AI-assisted test; assigned area: Aung Kyaw Phyo."""
+    catalog = Catalog()
+    cart = Cart(catalog)
+    product_count = 500_000
+
+    # Import a large dataset and verify both the count and stored content.
+    products = [
+        (product_id, f"Book {product_id}", product_id % 100 + 1)
+        for product_id in range(product_count)
+    ]
+
+    assert cart.import_products(products) == product_count
+    assert len(catalog.products) == product_count
+
+    for product_id in (0, product_count // 2, product_count - 1):
+        assert catalog.products[product_id] == {
+            "title": f"Book {product_id}",
+            "price": product_id % 100 + 1,
+        }

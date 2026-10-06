@@ -53,3 +53,47 @@ tests/test_bookstore.py::test_cart_total_counts_every_item PASSED
 ```text
 6 passed in 0.01s
 ```
+
+## Bug 2: Product import overcounts by one
+
+- **Module / function:** `bookstore_app/cart.py` -> `Cart.import_products()`
+- **What we suspected and why:** The method returns `count + 1`,
+  although `count` already tracks the processed records.
+- **What we did:** Imported two products, Book A and Book B, using
+  `test_import_reports_exact_count`.
+- **What we observed:** The method returned 3 for two input records.
+- **What we expected instead:** 2, because the method promises to
+  return how many products were imported.
+- **The fix we made:** Changed `return count + 1` to `return count`.
+  The counter already records the number of processed products.
+- **Failing-test commit:** `e9a793a`
+- **Author of this finding:** L Peter San Awng, with AI assistance.
+- **Assigned role:** Aung Kyaw Phyo's import-testing area.
+
+### Before-fix command
+
+```cmd
+.venv\Scripts\python.exe -m pytest tests/test_bookstore.py::test_import_reports_exact_count -v
+```
+
+### Before-fix evidence
+
+```text
+E       AssertionError: assert 3 == 2
+1 failed in 0.06s
+```
+
+### After-fix verification
+
+Command:
+
+```cmd
+.venv\Scripts\python.exe -m pytest tests/test_bookstore.py -v
+```
+
+Relevant actual output:
+
+```text
+tests/test_bookstore.py::test_import_reports_exact_count PASSED
+8 passed in 0.75s
+```
