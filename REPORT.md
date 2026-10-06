@@ -258,7 +258,48 @@ The nightly schedule is configured; this evidence is from a manual run,
 not a scheduled run.
 
 This nine-test run preceded the password and empty-checkout regressions.
-A final full CI run and verification of actual scheduled execution remain pending.
+The newer eleven-test run is recorded below. Verification of actual
+scheduled execution remains pending.
+
+### Verified Current Local and Manual Full Runs
+
+Application commit: `9646388`
+Actual tester and document author: L Peter San Awng, with AI assistance.
+
+Local command:
+
+```cmd
+.venv\Scripts\python.exe -m pytest tests/test_bookstore.py -v
+```
+
+Actual local result (Windows, Python 3.14.3):
+
+```text
+11 passed in 1.15s
+```
+
+GitHub Actions run: Bookstore Tests #31, on `main`.
+Trigger: manual (`workflow_dispatch`).
+
+[Successful eleven-test full GitHub Actions job](https://github.com/6705142021-peter/App_Testing_Test/actions/runs/37452101182/job/112230846791)
+
+CI command:
+
+```text
+python -m pytest tests -v
+```
+
+Actual CI result (Linux, Python 3.12.14):
+
+```text
+11 passed in 30.48s
+```
+
+Both smoke and full jobs succeeded. The full job included all five smoke
+tests, four regression tests and two slow tests. Test runtime differs from
+the overall job and workflow durations. This is evidence for the current
+four-fix application, not proof that all six required defects are resolved
+or that an actual nightly run has occurred.
 
 ## Part F -- Team Reflection
 
@@ -310,13 +351,15 @@ we do not claim that a separate teammate completed that handoff.
 
 The definitions, six scenario classifications and five reflection answers
 are assembled above. Supplied-test audits and coverage are documented.
+Smoke-test author docstrings have been corrected to the actual author,
+with planned assignments retained separately. The current eleven-test
+suite passed locally and in the manual CI run at `9646388`.
 The project is not yet claimed to satisfy every submission requirement.
 
 Remaining work:
 
 - Clarify search and history contracts and complete remaining defect work.
-- Correct smoke-test docstrings that name planned members instead of the actual author.
 - Review the report and AI-audit reflection with the group.
 - Rerun original-application smoke/regression checks and the final fixed suite.
-- Record final full CI evidence and check actual scheduled execution.
+- Repeat full CI verification after remaining fixes and check actual scheduled execution.
 - Verify private repository visibility and instructor collaborator access.
