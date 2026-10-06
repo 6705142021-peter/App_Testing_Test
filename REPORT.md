@@ -141,3 +141,28 @@ Actual summary:
 
 These measurements are local results. Runtime may differ on GitHub Actions.
 CI configuration and the supplied import-test audit are still pending.
+
+## Part E -- Continuous Integration Progress
+
+Assigned role: Aung Kyaw Phyo.
+Implemented by: L Peter San Awng, with AI assistance.
+
+The workflow runs smoke tests on pushes and pull requests.
+The complete student suite is configured for nightly runs at
+01:00 Bangkok time and manual execution.
+
+### Verified Push Smoke Run
+
+Branch: `aung-import-ci`
+Commit: `3c49e6f`
+
+[Successful GitHub Actions smoke job](https://github.com/6705142021-peter/App_Testing_Test/actions/runs/37441987447/job/112197697170)
+
+Actual result:
+
+```text
+5 passed, 4 deselected in 0.02s
+```
+
+The full job was skipped as configured for a push event.
+A successful full run and integration into main are still pending.
