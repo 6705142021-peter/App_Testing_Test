@@ -24,9 +24,10 @@ class Cart:
     def total(self):
         """Total price of everything currently in the cart."""
         total = 0
-        for i in range(len(self.items) - 1):
-            product_id = self.items[i]
+
+        for product_id in self.items:
             total += self.catalog.products[product_id]["price"]
+
         return total
 
     def checkout(self):
