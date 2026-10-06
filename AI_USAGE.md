@@ -630,11 +630,63 @@ truncate results merely to make the audit pass. If the instructor supplies an
 additional limit requirement, this verdict must be revisited.
 
 
+## Part 3 -- Coverage Summary
+
+This table describes the supplied AI tests, not the entire student suite.
+The four confirmed defects have independent student regressions recorded
+in FINDINGS.md. The two investigations below are not confirmed defects.
+
+| Behavior or defect | Supplied AI-test coverage | Evidence-based conclusion |
+|---|---|---|
+| Cart total omits the last item | test_cart_total_sums_items | Genuine detection: FAIL original, PASS after fix |
+| Import returns one too many | test_import_returns_count | Genuine detection: FAIL original, PASS after fix |
+| Empty checkout returns [] rather than None | test_checkout_empty_returns_none | Genuine detection of the return value; does not check order history |
+| Login changes password punctuation | test_login_rejects_wrong_password | Missed: PASS on original; no punctuation input |
+| Known-product insertion | test_add_to_cart_returns_true_for_known_product | Checks only True, not whether the item reaches the cart |
+| Duplicate registration | test_register_duplicate_returns_false | PASS on original; verifies working behavior, not a discovered defect |
+| Exact-title search | test_search_finds_exact_title | PASS on original; does not exercise differing letter case |
+| Ten-result search cap | test_search_is_limited_to_ten_results | FAIL on both versions; no supplied requirement supports the cap |
+| Case-insensitive search investigation | No supplied test covers differing letter case | Expected behavior requires instructor clarification |
+| Independent order-history snapshot investigation | No supplied test checks external mutation | Returned-list mutation affects stored history; snapshot requirement needs clarification |
+
+## Part 4 -- Reflection and Final Verdict
+
+Draft prepared by L Peter San Awng with AI assistance for group review.
+
+The most common failure mode was passing against the buggy application:
+four of the eight supplied tests passed on the original version. Three
+tests genuinely detected defects, and one asserted an unsupported
+ten-result search limit. Passing tests can still check useful basic
+behavior, but they are not evidence that a planted defect was detected.
+
+A test that passes against buggy code can create false confidence. For
+example, the wrong-password test passed while login still mishandled
+password punctuation. A crashing test exposes a problem with the test
+or its setup; a passing but incomplete test can quietly leave a defect
+unnoticed.
+
+The audit showed that readable code and plausible test names are not
+enough. Input selection and assertions determine what a test can detect.
+The cart-add test checked the return value without checking cart contents,
+and the empty-checkout test checked None without checking stored orders.
+The failing search-limit test also showed why an assertion must be
+supported by a requirement rather than accepted merely because it fails.
+
+Before trusting generated tests, we will check the requirement, inspect
+the setup and assertions, and run them on the original application.
+For a regression, we will preserve the failing output, implement the fix,
+and rerun the test and related checks. We will verify observable state
+as well as return values, declare AI assistance, and leave ambiguous
+contracts unresolved until clarified. The supplied tests detected three
+of our four confirmed defects; they did not detect the password defect.
+Search and history investigations remain outside that confirmed count.
+
 ## Status
 
 All eight audit entries include commands and actual output for the original
 application and the corresponding partially fixed application.
-The coverage table, group reflection and final application verification are
-still pending. Search and history investigations are not yet recorded as
+The coverage summary and reflection draft are included above. Group review,
+requirement clarification and final application verification remain pending.
+Search and history investigations are not yet recorded as
 confirmed additional planted defects.
 Repeat the fixed-code evidence against the final integrated application.
