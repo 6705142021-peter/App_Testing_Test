@@ -225,3 +225,42 @@ The current full student suite reported:
 10 passed in 1.06s
 
 The two supplied account-test audits are still pending.
+
+## Additional Sections -- Kaung Myat Tun's Assigned Area
+
+Completed by: L Peter San Awng, with AI assistance.
+These sections will be moved under the corresponding headings
+when the final group report is assembled.
+
+### Part B -- Scenario 4
+
+Classification: smoke.
+
+Checking whether the payment page loads after deployment quickly
+verifies an essential customer feature. It provides basic deployment
+feedback without exhaustively testing payment processing.
+
+### Part F -- Question 5
+
+When the bug finder and fixer are different people, the bug report
+must let the fixer reproduce the problem independently. It should
+include the application version, affected function, exact input,
+runnable command, actual result and expected result with its reason.
+
+For our empty-checkout defect, the recorded test creates an empty
+cart and shows that checkout returns [] instead of the documented
+None. This evidence would allow another person to reproduce the
+problem. In this work, L Peter San Awng performed both roles;
+we do not claim that a separate teammate completed that handoff.
+
+### Checkout-Fix Verification
+
+Failing-test commit: ab52f61
+Fix commit: 8fc783e
+
+The regression passed after adding the empty-cart check.
+The full student suite reported 11 passed in 1.09s.
+
+The supplied checkout-test audit is documented in AI_USAGE.md with actual
+original and current output: FAIL before the fix, PASS afterward.
+The history investigation remains pending.

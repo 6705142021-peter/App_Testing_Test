@@ -32,6 +32,9 @@ class Cart:
 
     def checkout(self):
         """Return the order list, or None if the cart is empty."""
+        if not self.items:
+            return None
+
         order = list(self.items)
         self.orders.append(order)
         self.items = []

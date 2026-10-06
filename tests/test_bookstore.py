@@ -150,3 +150,15 @@ def test_login_preserves_password_punctuation():
 
     assert users.login("alice", "secret!123") is True
     assert users.login("alice", "secret123") is False
+
+@pytest.mark.regression
+def test_empty_checkout_returns_none_without_order():
+    """Author: L Peter San Awng. AI-assisted test; assigned area: Kaung Myat Tun.
+
+    Cart.checkout returns an empty list and records an empty order.
+    Expected behavior: return None without placing an order.
+    """
+    cart = Cart(Catalog())
+
+    assert cart.checkout() is None
+    assert cart.history() == []
