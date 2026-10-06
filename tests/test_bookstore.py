@@ -97,3 +97,21 @@ def test_large_cart_repeated_totals():
     assert order.count(1) == pair_count
     assert order.count(2) == pair_count
     assert cart.items == []
+
+@pytest.mark.regression
+def test_import_reports_exact_count():
+    """Author: L Peter San Awng. AI-assisted test; assigned area: Aung Kyaw Phyo.
+
+    Cart.import_products returns one too many.
+    Expected behavior: return the exact number of imported products.
+    """
+    catalog = Catalog()
+    cart = Cart(catalog)
+
+    products = [
+        (1, "Book A", 10),
+        (2, "Book B", 20),
+    ]
+
+    assert cart.import_products(products) == 2
+    assert len(catalog.products) == 2
