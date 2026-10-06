@@ -1,0 +1,24 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.3, pytest-9.1.1, pluggy-1.6.0 -- C:\Github\App_Testing_Test\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Github\App_Testing_Test_original
+configfile: pytest.ini
+collecting ... collected 1 item
+
+ai_review/test_ai_generated.py::test_import_returns_count FAILED         [100%]
+
+================================== FAILURES ===================================
+__________________________ test_import_returns_count __________________________
+
+    def test_import_returns_count():
+        """Claims to check the bulk-import count."""
+        c = Cart(Catalog())
+>       assert c.import_products([(1, "A", 5), (2, "B", 6)]) == 2
+E       AssertionError: assert 3 == 2
+E        +  where 3 = import_products([(1, 'A', 5), (2, 'B', 6)])
+E        +    where import_products = <bookstore_app.cart.Cart object at 0x000002088C04FE00>.import_products
+
+ai_review\test_ai_generated.py:34: AssertionError
+=========================== short test summary info ===========================
+FAILED ai_review/test_ai_generated.py::test_import_returns_count - AssertionE...
+============================== 1 failed in 0.03s ==============================
