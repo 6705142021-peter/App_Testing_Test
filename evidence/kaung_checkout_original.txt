@@ -1,0 +1,25 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.3, pytest-9.1.1, pluggy-1.6.0 -- C:\Github\App_Testing_Test\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Github\App_Testing_Test_original
+configfile: pytest.ini
+collecting ... collected 1 item
+
+ai_review/test_ai_generated.py::test_checkout_empty_returns_none FAILED  [100%]
+
+================================== FAILURES ===================================
+______________________ test_checkout_empty_returns_none _______________________
+
+    def test_checkout_empty_returns_none():
+        """Claims to check that checking out an empty cart returns None."""
+>       assert Cart(Catalog()).checkout() is None
+E       assert [] is None
+E        +  where [] = checkout()
+E        +    where checkout = <bookstore_app.cart.Cart object at 0x000001BDC233FE00>.checkout
+E        +      where <bookstore_app.cart.Cart object at 0x000001BDC233FE00> = Cart(<bookstore_app.catalog.Catalog object at 0x000001BDC233F620>)
+E        +        where <bookstore_app.catalog.Catalog object at 0x000001BDC233F620> = Catalog()
+
+ai_review\test_ai_generated.py:45: AssertionError
+=========================== short test summary info ===========================
+FAILED ai_review/test_ai_generated.py::test_checkout_empty_returns_none - ass...
+============================== 1 failed in 0.03s ==============================
