@@ -85,8 +85,12 @@ def test_cart_total_counts_every_item():
     assert cart.total() == 30
 
 @pytest.mark.slow
+@pytest.mark.regression
 def test_large_cart_repeated_totals():
-    """Author: L Peter San Awng. AI-assisted slow test for large carts."""
+    """Author: L Peter San Awng. AI-assisted slow/regression bonus test.
+
+    Reproduces the omitted-last-item total defect with a large workload.
+    """
     catalog = Catalog()
     catalog.add_product(1, "Book A", 2)
     catalog.add_product(2, "Book B", 3)
