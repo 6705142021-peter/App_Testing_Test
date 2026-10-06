@@ -71,3 +71,29 @@ def test_cart_total_counts_every_item():
     assert cart.add(2) is True
 
     assert cart.total() == 30
+
+@pytest.mark.slow
+def test_large_cart_repeated_totals():
+    """Author: L Peter San Awng. AI-assisted slow test for large carts."""
+    catalog = Catalog()
+    catalog.add_product(1, "Book A", 2)
+    catalog.add_product(2, "Book B", 3)
+    cart = Cart(catalog)
+
+    pair_count = 100_000
+
+    # Large cart plus repeated full scans creates a substantial workload.
+    for _ in range(pair_count):
+        assert cart.add(1) is True
+        assert cart.add(2) is True
+
+    assert len(cart.items) == pair_count * 2
+
+    for _ in range(100):
+        assert cart.total() == pair_count * 5
+
+    order = cart.checkout()
+    assert len(order) == pair_count * 2
+    assert order.count(1) == pair_count
+    assert order.count(2) == pair_count
+    assert cart.items == []
