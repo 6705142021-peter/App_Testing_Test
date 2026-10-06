@@ -214,6 +214,53 @@ The supplied checkout-test audit is documented in AI_USAGE.md with actual
 original and current output: FAIL before the fix, PASS afterward.
 The history investigation remains pending.
 
+### Original-Application Suite Verification
+
+Original application commit: `4eadded`.
+Working folder: `C:\Github\App_Testing_Test_original`.
+Actual tester: L Peter San Awng.
+
+The current student test file was copied into the baseline worktree as
+`tests/test_submission_check.py`. The original application was not fixed
+for these checks. Results below were observed in the tester's terminal.
+
+Smoke command:
+
+```cmd
+C:\Github\App_Testing_Test\.venv\Scripts\python.exe -m pytest tests/test_submission_check.py -m smoke -v
+```
+
+Actual smoke summary:
+
+```text
+5 passed, 6 deselected in 0.02s
+```
+
+All five smoke tests passed on the original application: registration,
+product storage, password validation, nonempty checkout and cart insertion.
+This verifies baseline compatibility, not detection of every grading variant.
+
+Regression command:
+
+```cmd
+C:\Github\App_Testing_Test\.venv\Scripts\python.exe -m pytest tests/test_submission_check.py -m regression -v
+```
+
+Relevant actual regression output:
+
+```text
+FAILED tests/test_submission_check.py::test_cart_total_counts_every_item - assert 10 == 30
+FAILED tests/test_submission_check.py::test_import_reports_exact_count - AssertionError: assert 3 == 2
+FAILED tests/test_submission_check.py::test_login_preserves_password_punctuation - AssertionError: assert False is True
+FAILED tests/test_submission_check.py::test_empty_checkout_returns_none_without_order - assert [] is None
+4 failed, 7 deselected in 0.07s
+```
+
+All four selected regressions failed with assertions demonstrating their
+intended defects, rather than collection, import or setup errors. Together
+with the fixed-application eleven-test results below, this verifies detection
+of the four confirmed defects. It does not establish two additional defects.
+
 ## Part E -- Continuous Integration
 
 Assigned role: Aung Kyaw Phyo.
@@ -354,12 +401,17 @@ are assembled above. Supplied-test audits and coverage are documented.
 Smoke-test author docstrings have been corrected to the actual author,
 with planned assignments retained separately. The current eleven-test
 suite passed locally and in the manual CI run at `9646388`.
+Original-application verification passed all five smoke tests and failed
+all four regression tests for the intended assertions, as recorded above.
+L Peter San Awng also reports that the repository is now private and the
+instructor has collaborator access; these access settings were not
+independently checked by the assistant.
 The project is not yet claimed to satisfy every submission requirement.
 
 Remaining work:
 
 - Clarify search and history contracts and complete remaining defect work.
 - Review the report and AI-audit reflection with the group.
-- Rerun original-application smoke/regression checks and the final fixed suite.
+- Repeat original-application and fixed-suite checks after remaining test/fix changes.
 - Repeat full CI verification after remaining fixes and check actual scheduled execution.
-- Verify private repository visibility and instructor collaborator access.
+- Confirm the instructor can access the final private submission.
